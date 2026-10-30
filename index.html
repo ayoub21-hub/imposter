@@ -4,26 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IMPOSTER</title>
-    <!-- استدعاء الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Creepster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- إعدادات الألوان الأساسية (مأخوذة من الصورة) --- */
         :root {
-            --bg-dark: #090a0f;
-            --bg-panel: #12141c;
-            --primary-red: #ff003c;
-            --primary-red-glow: rgba(255, 0, 60, 0.4);
-            --btn-dark-blue: #1a1c29;
-            --btn-dark-blue-hover: #252838;
+            --bg-dark: #0b0914;
+            --bg-panel: #151226;
+            --bg-panel-light: #1d1836;
+            --primary-purple: #7c3aed;
+            --primary-purple-hover: #6d28d9;
+            --primary-red: #e11d48;
+            --primary-red-glow: rgba(225, 29, 72, 0.4);
+            --primary-green: #10b981;
             --text-white: #ffffff;
-            --text-gray: #8b8d98;
-            --civil-green: #00e676;
-            --civil-bg: #0a1f15;
-            --impostor-red: #ff003c;
-            --impostor-bg: #1f0a10;
-            --timer-blue: #00e5ff;
+            --text-gray: #9ca3af;
+            --border-color: #2d264f;
         }
 
         * {
@@ -43,51 +39,43 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* تأثير الإضاءة الخلفية */
-            background-image: radial-gradient(circle at center, #1a0b12 0%, var(--bg-dark) 70%);
+            background-image: radial-gradient(circle at top, #1a103c 0%, var(--bg-dark) 70%);
         }
 
         .screen {
             display: none;
             width: 100%;
             height: 100%;
-            max-width: 400px;
+            max-width: 420px;
             padding: 20px;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.3s ease;
         }
 
         .screen.active { display: flex; }
+        .screen.center-content { justify-content: center; align-items: center; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- الشاشة 1: البداية (Splash) --- */
-        .logo-title {
-            font-family: 'Creepster', cursive;
-            font-size: 4.5rem;
-            color: var(--primary-red);
-            text-shadow: 0 0 25px var(--primary-red-glow);
-            margin-bottom: 5px;
-            letter-spacing: 2px;
-            text-align: center;
+        /* --- التصميم العام للعناصر --- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
+        
+        .back-btn { color: var(--text-white); cursor: pointer; background: none; border: none; font-size: 1.2rem; }
 
-        .subtitle {
-            color: var(--text-gray);
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 60px;
-        }
-
-        /* --- الأزرار --- */
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             border: none;
             border-radius: 12px;
             font-size: 1.1rem;
@@ -101,648 +89,746 @@
             gap: 10px;
         }
 
-        .btn-primary {
-            background-color: var(--primary-red);
-            color: white;
-            box-shadow: 0 0 15px var(--primary-red-glow);
-        }
-        .btn-primary:active { transform: scale(0.96); opacity: 0.9; }
+        .btn-purple { background-color: var(--primary-purple); color: white; }
+        .btn-purple:active { background-color: var(--primary-purple-hover); transform: scale(0.97); }
 
-        .btn-secondary {
-            background-color: var(--btn-dark-blue);
-            color: var(--text-white);
-            border: 1px solid #2a2d3e;
-        }
-        .btn-secondary:active { background-color: var(--btn-dark-blue-hover); transform: scale(0.96); }
+        .btn-red { background-color: var(--primary-red); color: white; box-shadow: 0 4px 15px var(--primary-red-glow); }
+        .btn-red:active { opacity: 0.9; transform: scale(0.97); }
 
-        /* --- الشاشة 2 & 3: إعداد اللاعبين --- */
-        .header-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            width: 100%;
+        .btn-green { background-color: var(--primary-green); color: white; }
+        .btn-green:active { opacity: 0.9; transform: scale(0.97); }
+
+        .btn-outline { background-color: transparent; color: var(--text-white); border: 1px solid var(--border-color); }
+        .btn-outline:active { background-color: var(--bg-panel); }
+
+        /* --- الشاشة 1: الرئيسية --- */
+        .logo-img {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: var(--primary-red);
             text-align: center;
+            text-shadow: 0 0 20px var(--primary-red-glow);
+            margin-bottom: 0;
+            letter-spacing: 2px;
         }
-
-        .input-container {
+        .subtitle { color: var(--text-gray); text-align: center; margin-bottom: 30px; font-size: 0.9rem;}
+        
+        /* --- الشاشة 2: الإعدادات واللاعبين --- */
+        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; color: var(--text-white); }
+        
+        .player-input-row {
             display: flex;
-            width: 100%;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-
-        input[type="text"] {
+        .player-input-row input {
             flex: 1;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #2a2d3e;
             background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
             color: white;
-            font-size: 1rem;
+            padding: 12px;
+            border-radius: 10px;
             outline: none;
             text-align: center;
         }
 
-        .player-list {
-            width: 100%;
-            max-height: 40vh;
+        .player-list-container {
+            flex: 1;
             overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 5px;
+        }
+        .player-list-container::-webkit-scrollbar { width: 4px; }
+        .player-list-container::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+        .player-row {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-panel);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .avatar-small {
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            margin-left: 15px;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #333;
+        }
+        .player-name-display { flex: 1; font-weight: 700; }
+        .remove-icon { color: var(--primary-red); cursor: pointer; padding: 5px; }
+
+        /* Categories */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
             margin-bottom: 20px;
         }
-
-        .player-item {
+        .category-item {
             background-color: var(--bg-panel);
-            padding: 14px 20px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #1f2231;
-            font-weight: 600;
-        }
-
-        .remove-btn {
-            background: none;
-            color: var(--primary-red);
-            border: none;
-            font-size: 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 5px;
+            text-align: center;
+            font-size: 0.8rem;
             cursor: pointer;
+            transition: 0.2s;
         }
+        .category-item i { font-size: 1.5rem; margin-bottom: 8px; color: var(--text-gray); display: block;}
+        .category-item.selected {
+            border-color: var(--primary-purple);
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+        .category-item.selected i { color: var(--primary-purple); }
 
-        /* --- الشاشة 4: الإعدادات --- */
-        .settings-group {
-            width: 100%;
+        /* --- الشاشة 3: الإعدادات المتقدمة --- */
+        .settings-box {
             background-color: var(--bg-panel);
             border-radius: 15px;
             padding: 15px;
-            margin-bottom: 25px;
-            border: 1px solid #1f2231;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
-
-        .setting-item {
+        .setting-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
-            border-bottom: 1px solid #2a2d3e;
+            border-bottom: 1px solid var(--border-color);
         }
-        .setting-item:last-child { border-bottom: none; }
+        .setting-row:last-child { border-bottom: none; }
+        
+        /* Timer Selector */
+        .timer-selector { display: flex; gap: 5px; }
+        .timer-opt {
+            padding: 5px 10px; border-radius: 5px; background: var(--bg-panel-light); cursor: pointer; font-size: 0.9rem;
+        }
+        .timer-opt.active { background: var(--primary-purple); }
 
-        /* Switch Toggle */
-        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        /* Switch */
+        .switch { position: relative; display: inline-block; width: 45px; height: 25px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333; transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px;
-            left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--civil-green); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 17px; width: 17px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-green); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        select {
-            background-color: var(--bg-dark); color: white; border: 1px solid #2a2d3e;
-            padding: 8px 12px; border-radius: 8px; font-family: inherit; outline: none;
-        }
+        /* --- الشاشة 4: تأكيد الإعدادات --- */
+        .confirm-list { width: 100%; background: var(--bg-panel); border-radius: 15px; padding: 20px; margin-bottom: 20px;}
+        .confirm-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); color: var(--text-gray); font-size: 0.9rem;}
+        .confirm-item:last-child { border-bottom: none; }
+        .confirm-item span:last-child { color: var(--text-white); font-weight: 700; }
 
-        /* --- الشاشة 6 & 7: تمرير الهاتف وعرض الدور --- */
-        .phone-icon {
-            font-size: 4rem;
-            color: var(--text-white);
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        .role-card {
-            width: 100%;
-            padding: 40px 20px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* --- الشاشات الخاصة باللعب --- */
+        .big-avatar {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, var(--primary-purple) 0%, transparent 70%);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
         }
         
-        .role-card.civil { 
-            background-color: var(--civil-bg); 
-            border: 1px solid var(--civil-green);
-            box-shadow: 0 0 20px rgba(0, 230, 118, 0.1);
-        }
-        .role-card.impostor { 
-            background-color: var(--impostor-bg); 
-            border: 1px solid var(--impostor-red);
-            box-shadow: 0 0 20px var(--primary-red-glow);
-        }
-
-        .role-icon { font-size: 4rem; margin-bottom: 15px; }
-        .role-card.civil .role-icon { color: var(--civil-green); }
-        .role-card.impostor .role-icon { color: var(--impostor-red); }
-
-        .role-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 15px; }
-        .role-card.civil .role-title { color: var(--civil-green); }
-        .role-card.impostor .role-title { color: var(--impostor-red); }
-
-        .secret-word-box {
-            background-color: rgba(0,0,0,0.4);
-            padding: 15px 30px;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-        .secret-word-box span { display: block; color: var(--text-gray); font-size: 0.9rem; margin-bottom: 5px; }
-        .secret-word-box strong { font-size: 1.8rem; color: #fbbf24; }
-
-        /* --- الشاشة 8: المؤقت واللعب --- */
-        .timer-box {
-            background-color: var(--bg-panel);
-            border: 1px solid #2a2d3e;
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
+        .role-title-big { font-size: 1.8rem; font-weight: 900; text-align: center; margin-bottom: 10px; }
+        .role-subtitle { color: var(--text-gray); text-align: center; margin-bottom: 20px; font-size: 0.9rem; }
+        
+        .word-box {
+            background-color: var(--bg-panel-light);
+            border: 2px dashed var(--primary-purple);
+            border-radius: 12px;
+            padding: 15px;
             text-align: center;
             margin-bottom: 20px;
         }
-        .timer-text {
-            font-size: 5rem;
-            font-weight: 900;
-            color: var(--timer-blue);
-            text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-            font-variant-numeric: tabular-nums;
-        }
-        .timer-label { color: var(--text-gray); font-size: 0.9rem; }
+        .word-box span { display: block; color: var(--text-gray); font-size: 0.8rem; margin-bottom: 5px; }
+        .word-box strong { font-size: 1.8rem; color: #fbbf24; }
 
-        .players-turn {
-            display: flex;
-            width: 100%;
-            gap: 15px;
-        }
-        .turn-card {
-            flex: 1;
+        /* Timer Game */
+        .timer-header { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+        .timer-number { font-size: 4rem; font-weight: 900; text-align: center; color: var(--primary-red); text-shadow: 0 0 20px var(--primary-red-glow); margin: 20px 0; }
+        
+        .rules-box {
             background-color: var(--bg-panel);
-            border: 1px solid #1f2231;
             border-radius: 15px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: var(--text-gray);
         }
-        .turn-card.questioner { border-bottom: 3px solid var(--primary-red); }
-        .turn-card.answerer { border-bottom: 3px solid var(--timer-blue); }
-        
-        .turn-card i { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-gray); }
-        .turn-name { font-size: 1.2rem; font-weight: 700; }
-        .turn-card.questioner .turn-name { color: var(--primary-red); }
-        .turn-card.answerer .turn-name { color: var(--timer-blue); }
+        .rules-box ul { padding-right: 20px; margin-top: 10px; }
+        .rules-box li { margin-bottom: 5px; }
+
+        .turn-display { display: flex; gap: 10px; width: 100%; margin-bottom: 20px; }
+        .turn-card { flex: 1; background: var(--bg-panel); padding: 15px; border-radius: 12px; text-align: center; border-top: 3px solid var(--primary-purple); }
+        .turn-card.answerer { border-top-color: var(--primary-green); }
+        .turn-card p { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 5px; }
+        .turn-card h3 { font-size: 1.1rem; }
+
+        /* --- التصويت --- */
+        .vote-list { width: 100%; overflow-y: auto; flex: 1; }
+        .vote-row {
+            display: flex; align-items: center; background: var(--bg-panel); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); cursor: pointer;
+        }
+        .vote-row:active { background: var(--bg-panel-light); }
+        .vote-avatar { width: 40px; height: 40px; border-radius: 50%; margin-left: 15px; display: flex; justify-content: center; align-items: center;}
+        .vote-name { flex: 1; font-weight: 700; }
+        .radio-circle { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-gray); }
+        .vote-row.selected { border-color: var(--primary-purple); }
+        .vote-row.selected .radio-circle { background: var(--primary-purple); border-color: var(--primary-purple); }
+
+        /* --- النتائج --- */
+        .result-icon { font-size: 4rem; margin-bottom: 20px; }
+        .win { color: var(--primary-green); text-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+        .lose { color: var(--primary-red); text-shadow: 0 0 20px var(--primary-red-glow); }
+
+        input.guess-input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid var(--border-color); background: var(--bg-panel); color: white; font-size: 1.2rem; text-align: center; margin-bottom: 20px; outline: none; }
+        input.guess-input:focus { border-color: var(--primary-purple); }
 
     </style>
 </head>
 <body>
 
-    <!-- 1. شاشة البداية -->
-    <div id="screen-menu" class="screen active">
-        <!-- شكل الشخص الغامض (تم تقليده بـ CSS) -->
-        <div style="width: 150px; height: 150px; background: radial-gradient(circle, #ff003c 0%, transparent 70%); margin-bottom: -20px; opacity: 0.3;"></div>
+    <!-- 1. الشاشة الرئيسية -->
+    <div id="screen-home" class="screen center-content active">
+        <div style="height: 150px;"></div> <!-- مساحة للشخصيات في الخلف -->
+        <h1 class="logo-img">IMPOSTER</h1>
+        <p class="subtitle">اكتشف المحتال قبل فوات الأوان</p>
         
-        <h1 class="logo-title">IMPOSTER</h1>
-        <p class="subtitle">كولشي حقيقة...<br>ماشي كولشي كيعرفها</p>
-        
-        <div style="width: 100%; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="navigate('screen-setup')">START</button>
+        <div style="width: 100%; margin-top: 30px;">
+            <button class="btn btn-red" onclick="goToSetup()"><i class="fa-solid fa-play"></i> ابدأ لعبة جديدة</button>
+            <button class="btn btn-outline" onclick="navigate('screen-advanced')"><i class="fa-solid fa-gear"></i> الإعدادات</button>
+            <button class="btn btn-outline" onclick="navigate('screen-how-to-play')"><i class="fa-solid fa-circle-info"></i> طريقة اللعب</button>
         </div>
     </div>
 
-    <!-- 2. شاشة اللاعبين -->
+    <!-- شاشة طريقة اللعب -->
+    <div id="screen-how-to-play" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="navigate('screen-home')"><i class="fa-solid fa-arrow-right"></i></button> طريقة اللعب</div>
+        <div class="rules-box" style="font-size: 1rem;">
+            <p style="margin-bottom: 15px; color: white; font-weight: bold;">كيف تلعب؟</p>
+            <ol style="padding-right: 20px; line-height: 1.8;">
+                <li>اختر عدد اللاعبين وأسماءهم.</li>
+                <li>يتم توزيع الأدوار سراً عبر تمرير الهاتف.</li>
+                <li>اللاعب العادي يعرف الكلمة السرية.</li>
+                <li>الإمبوستر لا يعرف الكلمة وعليه التخمين.</li>
+                <li>اسأل وأجب لتكتشف من هو الإمبوستر.</li>
+                <li>صوّت لطرد المشتبه به!</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- 2. إعداد اللاعبين -->
     <div id="screen-setup" class="screen">
-        <h2 class="header-title">إعداد اللاعبين</h2>
+        <div class="top-bar">
+            <span>إعداد اللاعبين</span>
+            <span style="color: var(--primary-purple);" id="player-count-display">0 / 15</span>
+        </div>
         
-        <div class="input-container">
-            <input type="text" id="player-name-input" placeholder="اسم اللاعب..." autocomplete="off" onkeypress="handleKeyPress(event)">
-            <button class="btn btn-secondary" style="width: auto; margin: 0; padding: 0 20px;" onclick="addPlayer()">+</button>
+        <div class="player-input-row">
+            <input type="text" id="player-name-input" placeholder="اسم اللاعب..." onkeypress="handleKeyPress(event)">
+            <button class="btn btn-purple" style="width: auto; margin: 0; padding: 0 20px;" onclick="addPlayer()"><i class="fa-solid fa-plus"></i></button>
         </div>
 
-        <div class="player-list" id="player-list-container"></div>
+        <div class="player-list-container" id="player-list"></div>
 
-        <button class="btn btn-primary" id="btn-next-to-settings" onclick="goToSettings()" disabled>التالي</button>
-        <button class="btn btn-secondary" onclick="navigate('screen-menu')">رجوع</button>
+        <div class="section-title">اختر الفئة</div>
+        <div class="categories-grid" id="category-grid">
+            <!-- سيتم توليد الفئات هنا -->
+        </div>
+
+        <button class="btn btn-purple" id="btn-next-setup" onclick="goToAdvanced()" disabled>التالي</button>
+        <button class="btn btn-outline" onclick="navigate('screen-home')">رجوع</button>
     </div>
 
-    <!-- 3. شاشة الإعدادات -->
-    <div id="screen-settings" class="screen">
-        <h2 class="header-title">الإعدادات</h2>
+    <!-- 3. الإعدادات المتقدمة -->
+    <div id="screen-advanced" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="goToSetup()"><i class="fa-solid fa-arrow-right"></i></button> الإعدادات المتقدمة</div>
         
-        <div class="settings-group">
-            <div class="setting-item">
+        <div class="settings-box">
+            <div class="setting-row">
+                <span>المؤقت</span>
+                <div class="timer-selector" id="timer-selector">
+                    <div class="timer-opt" onclick="setTimer(30, this)">30 ث</div>
+                    <div class="timer-opt active" onclick="setTimer(45, this)">45 ث</div>
+                    <div class="timer-opt" onclick="setTimer(60, this)">60 ث</div>
+                </div>
+            </div>
+            <div class="setting-row">
+                <span>تلميح الإمبوستر</span>
+                <label class="switch"><input type="checkbox" id="impostor-hint-toggle" checked><span class="slider"></span></label>
+            </div>
+            <div class="setting-row">
                 <span>مساعد الإمبوستر (Helper)</span>
-                <label class="switch">
-                    <input type="checkbox" id="helper-toggle" checked>
-                    <span class="slider"></span>
-                </label>
+                <label class="switch"><input type="checkbox" id="helper-toggle" checked><span class="slider"></span></label>
             </div>
-            <div class="setting-item">
+            <div class="setting-row">
                 <span>عدد الإمبوسترات</span>
-                <select id="impostor-count">
+                <select id="impostor-count" style="background: var(--bg-panel-light); color: white; border: none; padding: 5px 10px; border-radius: 5px;">
                     <option value="1">1 إمبوستر</option>
-                    <option value="2">2 إمبوستر</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <span>مدة المؤقت</span>
-                <select id="timer-duration">
-                    <option value="30">30 ثانية</option>
-                    <option value="45">45 ثانية</option>
-                    <option value="60">60 ثانية</option>
+                    <option value="2">2 إمبوسترات</option>
                 </select>
             </div>
         </div>
 
-        <button class="btn btn-primary" onclick="startGame()">بدء اللعبة</button>
-        <button class="btn btn-secondary" onclick="navigate('screen-setup')">رجوع</button>
+        <button class="btn btn-purple" onclick="goToConfirm()">حفظ الإعدادات</button>
     </div>
 
-    <!-- 4. شاشة تمرير الهاتف -->
-    <div id="screen-pass" class="screen">
-        <i class="fa-solid fa-mobile-screen-button phone-icon"></i>
-        <h2 style="color: var(--text-gray); font-weight: normal; margin-bottom: 10px;">مرر الهاتف إلى</h2>
-        <h1 id="pass-player-name" style="color: white; font-size: 2.5rem; margin-bottom: 40px;">اللاعب</h1>
-        <button class="btn btn-primary" onclick="showRole()">إظهار الدور</button>
-    </div>
-
-    <!-- 5. شاشة عرض الدور -->
-    <div id="screen-role" class="screen">
-        <div id="role-card-display" class="role-card civil">
-            <i id="role-icon" class="fa-solid fa-user-secret role-icon"></i>
-            <div id="role-title" class="role-title">مدني</div>
-            
-            <div id="word-display" class="secret-word-box">
-                <span>الكلمة السرية</span>
-                <strong>كلمة</strong>
-            </div>
-            <p id="role-desc" style="color: var(--text-gray); margin-top: 15px; font-size: 0.9rem;"></p>
-        </div>
-        <button class="btn btn-secondary" onclick="hideRole()">إخفاء الدور</button>
-    </div>
-
-    <!-- 6. شاشة اللعب (المؤقت) -->
-    <div id="screen-game" class="screen">
-        <div class="timer-box">
-            <div class="timer-label">الوقت المتبقي</div>
-            <div class="timer-text" id="timer-display">00:30</div>
-        </div>
+    <!-- 4. تأكيد الإعدادات -->
+    <div id="screen-confirm" class="screen">
+        <div class="top-bar"><button class="back-btn" onclick="navigate('screen-advanced')"><i class="fa-solid fa-arrow-right"></i></button> تأكيد الإعدادات</div>
         
-        <div class="players-turn">
-            <div class="turn-card questioner">
-                <i class="fa-solid fa-comment-dots"></i>
-                <div class="turn-name" id="questioner-name">-</div>
+        <div class="confirm-list">
+            <div class="confirm-item"><span><i class="fa-solid fa-users"></i> عدد اللاعبين</span> <span id="c-players">0</span></div>
+            <div class="confirm-item"><span><i class="fa-solid fa-folder"></i> الفئة</span> <span id="c-category">-</span></div>
+            <div class="confirm-item"><span><i class="fa-solid fa-stopwatch"></i> المؤقت</span> <span id="c-timer">-</span></div>
+            <div class="confirm-item"><span><i class="fa-solid fa-mask"></i> تلميح الإمبوستر</span> <span id="c-hint">-</span></div>
+            <div class="confirm-item"><span><i class="fa-solid fa-user-secret"></i> عدد الإمبوسترات</span> <span id="c-impostors">-</span></div>
+            <div class="confirm-item"><span><i class="fa-solid fa-user-ninja"></i> المساعد</span> <span id="c-helper">-</span></div>
+        </div>
+
+        <button class="btn btn-green" onclick="startGame()"><i class="fa-solid fa-play"></i> بدء اللعبة</button>
+    </div>
+
+    <!-- 5. تمرير الهاتف -->
+    <div id="screen-pass" class="screen center-content">
+        <i class="fa-solid fa-mobile-screen-button" style="font-size: 5rem; color: var(--text-gray); margin-bottom: 30px;"></i>
+        <h2 style="color: var(--text-gray); font-weight: normal; margin-bottom: 10px;">مرر الهاتف إلى اللاعب التالي</h2>
+        <h1 id="pass-name" style="font-size: 2.5rem; color: white; margin-bottom: 50px;">-</h1>
+        <button class="btn btn-purple" onclick="showRole()">إظهار دوري</button>
+    </div>
+
+    <!-- 6. عرض الدور -->
+    <div id="screen-role" class="screen center-content">
+        <h2 class="role-title-big" id="role-title">أنت لاعب عادي</h2>
+        <p class="role-subtitle" id="role-subtitle">اكتشف الإمبوستر</p>
+        
+        <div class="big-avatar" id="role-avatar"></div>
+        
+        <div class="word-box" id="word-container">
+            <span>الكلمة السرية</span>
+            <strong id="role-word">-</strong>
+        </div>
+
+        <button class="btn btn-red" style="margin-top: 20px;" onclick="hideRole()">إخفاء الدور</button>
+    </div>
+
+    <!-- 7. مرحلة النقاش -->
+    <div id="screen-discussion" class="screen">
+        <div class="top-bar"><span>مرحلة النقاش</span> <span id="discussion-timer" style="color: var(--primary-red);">00:45</span></div>
+        
+        <div class="rules-box">
+            <p style="font-weight: bold; margin-bottom: 10px; color: white;">ما هي الإرشادات؟</p>
+            <ul>
+                <li>قدم تلميحات ذكية.</li>
+                <li>اطرح أسئلة على الآخرين.</li>
+                <li>حاول اكتشاف المحتال.</li>
+            </ul>
+        </div>
+
+        <div class="turn-display">
+            <div class="turn-card">
+                <p>السائل</p>
+                <h3 id="q-name" style="color: var(--primary-purple);">-</h3>
             </div>
             <div class="turn-card answerer">
-                <i class="fa-solid fa-microphone"></i>
-                <div class="turn-name" id="answerer-name">-</div>
+                <p>المجيب</p>
+                <h3 id="a-name" style="color: var(--primary-green);">-</h3>
             </div>
         </div>
 
-        <button class="btn btn-secondary" onclick="stopGameAndVote()" style="margin-top: 30px;">إنهاء الجولة والتصويت</button>
+        <button class="btn btn-outline" onclick="startVoting()" style="margin-top: auto;">الانتقال إلى التصويت</button>
     </div>
 
-    <!-- 7. شاشة التصويت -->
+    <!-- 8. التصويت -->
     <div id="screen-vote" class="screen">
-        <h2 class="header-title">من هو الإمبوستر؟</h2>
-        <div class="player-list" id="vote-list-container" style="max-height: 60vh;"></div>
+        <div class="top-bar"><span>التصويت</span></div>
+        <p style="color: var(--text-gray); margin-bottom: 20px; text-align: center;">من تشتبه به؟ اختر لاعباً واحداً</p>
+        
+        <div class="vote-list" id="vote-list"></div>
+        
+        <button class="btn btn-purple" id="btn-submit-vote" onclick="submitVote()" disabled>تأكيد التصويت</button>
     </div>
 
-    <!-- 8. شاشة النتائج -->
-    <div id="screen-result" class="screen">
-        <h1 id="result-title" style="color: white; font-size: 2.5rem; margin-bottom: 10px;">النتيجة</h1>
-        <p id="result-subtitle" style="color: var(--text-gray); margin-bottom: 30px; text-align: center;"></p>
+    <!-- 9. نتيجة التصويت / التخمين الأخير -->
+    <div id="screen-last-guess" class="screen center-content">
+        <i class="fa-solid fa-user-secret result-icon lose"></i>
+        <h2 style="color: white; margin-bottom: 10px;">كشف الإمبوستر!</h2>
+        <p style="color: var(--text-gray); margin-bottom: 30px; text-align: center;">لقد تم طرد الإمبوستر (<span id="caught-name" style="color: var(--primary-red); font-weight: bold;">-</span>)<br>هل يمكنه تخمين الكلمة السرية للفوز؟</p>
         
-        <div class="role-card impostor" style="padding: 20px;">
-            <div style="color: var(--text-gray); font-size: 0.9rem;">الإمبوستر كان:</div>
-            <div style="color: var(--impostor-red); font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;" id="impostor-name-reveal">-</div>
-            <div style="color: var(--text-gray); font-size: 0.9rem;">الكلمة السرية كانت:</div>
-            <div style="color: #fbbf24; font-size: 1.5rem; font-weight: bold;" id="word-reveal">-</div>
+        <input type="text" class="guess-input" id="guess-input" placeholder="اكتب الكلمة هنا...">
+        
+        <button class="btn btn-red" onclick="checkGuess()">تحقق</button>
+    </div>
+
+    <!-- 10. شاشة النهاية -->
+    <div id="screen-gameover" class="screen center-content">
+        <i id="result-icon" class="fa-solid fa-trophy result-icon win"></i>
+        <h1 id="result-title" style="font-size: 2.5rem; margin-bottom: 10px;">فاز المدنيون!</h1>
+        <p id="result-desc" style="color: var(--text-gray); margin-bottom: 30px; text-align: center;"></p>
+        
+        <div class="word-box" style="border-color: var(--border-color);">
+            <span>الكلمة السرية كانت</span>
+            <strong id="final-word">-</strong>
         </div>
 
-        <button class="btn btn-primary" style="margin-top: 30px;" onclick="location.reload()">لعبة جديدة</button>
+        <button class="btn btn-purple" onclick="location.reload()">لعبة جديدة</button>
     </div>
 
     <script>
-        // --- المنطق البرمجي (نفس النسخة السابقة مع تعديلات بسيطة) ---
-        const words = [
-  // المدن والدول
-  "المغرب", "فرنسا", "إسبانيا", "إيطاليا", "ألمانيا",
-  "أمريكا", "كندا", "تركيا", "اليابان", "الصين",
-  "مصر", "السعودية", "الإمارات", "البرتغال", "البرازيل",
-  "مراكش", "أكادير", "طنجة", "الرباط", "فاس",
-  "الدار البيضاء", "تطوان", "وجدة", "العيون", "كلميم",
-  "باريس", "لندن", "مدريد", "روما", "نيويورك",
-  "دبي", "مكة", "المدينة", "طوكيو",
+        // --- البيانات الأساسية ---
+        // الألوان لـ 15 شخصية (مستوحاة من Among Us)
+        const AVATAR_COLORS = [
+            '#e11d48', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', 
+            '#ec4899', '#06b6d4', '#84cc16', '#ef4444', '#6366f1',
+            '#14b8a6', '#f97316', '#a855f7', '#22c55e', '#eab308'
+        ];
 
-  // الفضاء والطبيعة
-  "القمر", "الشمس", "الأرض", "المريخ", "النجوم",
-  "البحر", "النهر", "الجبل", "الغابة", "الصحراء",
-  "البركان", "الشلال", "الجزيرة", "الرمل", "الحجر",
-  "الثلج", "المطر", "السحاب", "الريح", "الرعد",
-  "البرق", "قوس قزح", "الكهف", "الوادي", "البحيرة",
-  "الشاطئ", "النخلة", "الوردة", "الشجرة", "العشب",
+        const CATEGORIES = {
+            "science": { name: "علوم", icon: "fa-flask", words: ["ذرة", "جاذبية", "خلية", "مختبر", "كيمياء", "فيزياء", "طاقة", "مجهر"] },
+            "food": { name: "أكل", icon: "fa-utensils", words: ["كسكس", "طاجين", "بيتزا", "حريرة", "مسمن", "شاي", "قهوة", "برغر"] },
+            "animals": { name: "حيوانات", icon: "fa-paw", words: ["أسد", "قطة", "كلب", "فيل", "عصفور", "سمكة", "حصان", "زرافة"] },
+            "places": { name: "أماكن", icon: "fa-map-marker-alt", words: ["مدرسة", "مستشفى", "بحر", "جبل", "مطار", "سوق", "حديقة", "مكتبة"] },
+            "tech": { name: "تكنولوجيا", icon: "fa-laptop", words: ["هاتف", "حاسوب", "إنترنت", "روبوت", "شاشة", "لوحة مفاتيح", "كاميرا", "سماعة"] },
+            "professions": { name: "مهن", icon: "fa-user-tie", words: ["طبيب", "مهندس", "معلم", "طيار", "شرطي", "نجار", "خباز", "ممرض"] }
+        };
 
-  // المأكولات
-  "الطاجين", "الكسكس", "الرفيسة", "البسطيلة", "الحريرة",
-  "البيصارة", "المسمن", "الحرشة", "السفنج", "البغرير",
-  "الملوي", "البيتزا", "البرغر", "الشاورما", "الطاكوس",
-  "السوشي", "السباغيتي", "البطاطا المقلية", "الدجاج محمر",
-  "الحوت مشوي", "اللحم مشوي", "البانيني", "البريوات",
-  "البيض", "الجبن", "الزيتون", "الخبز", "العسل",
-  "الزبدة", "المربى", "الشوكولاتة", "البسكويت",
-  "الفشار", "الكفتة", "السردين", "العدس", "اللوبيا",
-  "الأرز", "المعكرونة", "التفاح", "الموز", "البرتقال",
-
-  // التكنولوجيا والأجهزة
-  "التلفون", "الحاسوب", "التلفاز", "الفأرة", "الكلافي",
-  "الشارجور", "السماعات", "الكاميرا", "الطابعة", "الفلاشة",
-  "الويفي", "الروتور", "البطارية", "الشاشة", "الروبوت",
-  "الدرون", "البلايستيشن", "المانيت", "الريموت",
-  "الطابليت", "الساعة الذكية", "الميكرو", "السكانير",
-  "البروجكتور", "الراديو", "المصباح الذكي", "الماوس",
-  "الكابل", "الشاحن اللاسلكي", "الكارت ميموار",
-
-  // المهن
-  "البوليسي", "العسكري", "الطبيب", "المعلم", "الطيار",
-  "البحار", "الطباخ", "الحلاق", "الميكانيكي", "الكهربائي",
-  "البلومبي", "النجار", "الحداد", "السائق", "الفلاح",
-  "الصياد", "الإطفائي", "البناء", "الخباز", "الحارس",
-  "الحكم", "التاجر", "الكساب", "الجزار", "الخياط",
-  "المصور", "المغني", "الممثل", "اللاعب", "ساعي البريد",
-  "عامل النظافة", "رجل الإطفاء", "المحامي", "القاضي",
-
-  // الحيوانات
-  "الأسد", "النمر", "الفيل", "القرد", "الزرافة",
-  "الحصان", "الحمار", "الجمل", "الذئب", "الثعلب",
-  "الدب", "الأرنب", "السلحفاة", "التمساح", "الحوت",
-  "الدلفين", "القرش", "الأخطبوط", "النسر", "البومة",
-  "الدجاجة", "الديك", "البقرة", "الخروف", "الماعز",
-  "القط", "الكلب", "الفأر", "الثعبان", "الضفدع",
-  "النحلة", "الفراشة", "النملة", "البعوضة", "الذبان",
-  "البطريق", "الكنغر", "الطاووس", "الحمامة", "الغراب",
-
-  // المشروبات
-  "أتاي", "القهوة", "الحليب", "عصير البرتقال",
-  "عصير الليمون", "الماء", "كوكا كولا", "فانتا",
-  "سبرايت", "باناشي", "رايبي", "نيسكافي",
-  "اللبن", "الرايب", "عصير التفاح", "عصير الموز",
-  "الماء الغازي", "الشوكولاتة الساخنة", "النعناع",
-
-  // الرياضة والترفيه
-  "كرة القدم", "كرة السلة", "التنس", "الملاكمة",
-  "السباحة", "ركوب الخيل", "الدراجة", "الجري",
-  "البلايستيشن", "السينما", "الكارطة", "الشطرنج",
-  "البلياردو", "كرة الطائرة", "كرة اليد", "اليوغا",
-  "التزلج", "صيد السمك", "كرة الطاولة",
-
-  // أدوات وأشياء يومية
-  "المراية", "المفتاح", "القفل", "الساعة", "النظارات",
-  "الصابون", "فرشاة الأسنان", "المظلة", "الشمعة",
-  "السكين", "الملعقة", "المخدة", "البطانية",
-  "الصندوق", "الحقيبة", "الصباط", "الطابلة",
-  "الكرسي", "الباب", "النافذة", "المصعد",
-  "الدروج", "المصباح", "المروحة", "الثلاجة",
-  "الغسالة", "المكواة", "الخيمة", "الخاتم",
-  "القلم", "الكتاب", "الدفتر", "المحفظة",
-  "المقص", "المشط", "المنشفة", "الدلو",
-  "الكاس", "الصحن", "الطنجرة", "المقلاة",
-  "البوطا", "الزربية", "التلفون", "الفران",
-  "الوسادة", "الستارة", "السلة", "المرشة",
-
-  // وسائل النقل
-  "الطوموبيل", "الطوبيس", "الطاكسي", "القطار",
-  "الطيارة", "السفينة", "الموتور", "التروتينيت",
-  "الدراجة", "الشاحنة", "الجرار", "الهليكوبتر",
-  "المترو", "الكار", "الترامواي", "الغواصة",
-  "القطار السريع", "الكاميو",
-
-  // الجسم والملابس
-  "الرأس", "العين", "الأنف", "الفم", "الأذن",
-  "اليد", "الرجل", "الشعر", "الأسنان", "اللسان",
-  "القلب", "الكرش", "الكتف", "الركبة", "الصبع",
-  "القميجة", "السروال", "الجلباب", "القفطان",
-  "الجاكيطة", "الحذاء", "القبعة", "الجوارب",
-  "النظارات", "الساعة", "الحزام", "الفولار",
-
-  // أماكن معروفة
-  "المدرسة", "المستشفى", "المطار", "المحطة",
-  "المسجد", "السوق", "الحمام", "المقهى",
-  "المطعم", "الفندق", "الملعب", "البحر",
-  "الحديقة", "المكتبة", "السجن", "الميناء",
-  "المخبزة", "الصيدلية", "البنك", "السينما",
-  "المول", "المسبح", "المزرعة", "محطة البنزين",
-
-  // أدوات الكهرباء
-  "المفتاح الكهربائي", "البريزة", "الفيوز", "الكونتاكتور",
-   "المحرك", "الدينامو", "الترانسفورماتور",
-   "البطارية", "اللوحة الشمسية", "الكابل",
-  "الفولتميتر",  
-   "السخان الكهربائي", "الجرس",
-];
+        let players = JSON.parse(localStorage.getItem('imposter_players_v2')) || [];
+        let currentCategory = "science";
+        let timerDuration = 45;
         
-        let players = JSON.parse(localStorage.getItem('imposter_players')) || [];
-        let gameRoles = {}; 
-        let currentPlayerIndex = 0;
-        let secretWord = "";
-        let impostorsList = [];
-        let helperEnabled = false;
-        let timerDuration = 30;
+        // إعدادات اللعبة
+        let gameConfig = {
+            helperEnabled: true,
+            impostorCount: 1,
+            hintEnabled: true
+        };
 
-        let timerInterval;
-        let timeLeft = 30;
+        // حالة اللعبة
+        let gameState = {
+            word: "",
+            impostors: [],
+            helper: null,
+            roles: {}, // { playerName: "civil" | "impostor" | "helper" }
+            currentPlayerIndex: 0,
+            timerInterval: null,
+            timeLeft: 0,
+            votes: {}
+        };
 
-        document.addEventListener('DOMContentLoaded', () => { renderPlayerList(); });
-
+        // --- دوال المساعدة (UI) ---
         function navigate(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
 
-        function handleKeyPress(e) { if (e.key === 'Enter') addPlayer(); }
+        // توليد شكل الشخصية (SVG)
+        function getAvatarSVG(color, index) {
+            // شكل مبسط يشبه شخصيات اللعبة
+            return `<svg viewBox="0 0 100 100" width="100%" height="100%">
+                <rect x="15" y="20" width="70" height="70" rx="30" fill="${color}" />
+                <rect x="35" y="35" width="30" height="20" rx="10" fill="#88ccff" opacity="0.8" />
+                <ellipse cx="45" cy="40" rx="4" ry="6" fill="white" />
+                <rect x="25" y="65" width="15" height="30" rx="7" fill="${color}" />
+                <rect x="60" y="65" width="15" height="30" rx="7" fill="${color}" />
+            </svg>`;
+        }
+
+        // --- إدارة اللاعبين ---
+        function goToSetup() {
+            renderPlayerList();
+            renderCategories();
+            navigate('screen-setup');
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') addPlayer();
+        }
 
         function addPlayer() {
             const input = document.getElementById('player-name-input');
             const name = input.value.trim();
-            if (name === "") return;
-            if (players.includes(name)) return alert("الاسم موجود مسبقاً");
-            if (players.length >= 10) return alert("الحد الأقصى 10 لاعبين");
 
-            players.push(name);
-            localStorage.setItem('imposter_players', JSON.stringify(players));
+            if (name === "") return;
+            if (players.some(p => p.name === name)) return alert("هذا الاسم موجود مسبقاً");
+            if (players.length >= 15) return alert("الحد الأقصى 15 لاعباً");
+
+            // إعطاء شخصية فريدة
+            const color = AVATAR_COLORS[players.length];
+            players.push({ name: name, color: color });
+            
+            localStorage.setItem('imposter_players_v2', JSON.stringify(players));
             input.value = "";
             renderPlayerList();
         }
 
         function removePlayer(index) {
             players.splice(index, 1);
-            localStorage.setItem('imposter_players', JSON.stringify(players));
+            // إعادة تعيين الألوان لضمان عدم تكرارها
+            players.forEach((p, i) => p.color = AVATAR_COLORS[i]);
+            localStorage.setItem('imposter_players_v2', JSON.stringify(players));
             renderPlayerList();
         }
 
         function renderPlayerList() {
-            const container = document.getElementById('player-list-container');
+            const container = document.getElementById('player-list');
             container.innerHTML = "";
+            
             players.forEach((player, index) => {
                 const div = document.createElement('div');
-                div.className = 'player-item';
-                div.innerHTML = `<span>${index + 1}. ${player}</span><button class="remove-btn" onclick="removePlayer(${index})"><i class="fa-solid fa-trash"></i></button>`;
+                div.className = 'player-row';
+                div.innerHTML = `
+                    <div class="avatar-small">${getAvatarSVG(player.color, index)}</div>
+                    <div class="player-name-display">${player.name}</div>
+                    <div class="remove-icon" onclick="removePlayer(${index})"><i class="fa-solid fa-xmark"></i></div>
+                `;
                 container.appendChild(div);
             });
-            document.getElementById('btn-next-to-settings').disabled = players.length < 4;
+
+            document.getElementById('player-count-display').innerText = `${players.length} / 15`;
+            document.getElementById('btn-next-setup').disabled = players.length < 4;
         }
 
-        function goToSettings() {
-            if (players.length < 4) return alert("تحتاج 4 لاعبين على الأقل");
-            navigate('screen-settings');
+        function renderCategories() {
+            const grid = document.getElementById('category-grid');
+            grid.innerHTML = "";
+            for (const [key, data] of Object.entries(CATEGORIES)) {
+                const div = document.createElement('div');
+                div.className = `category-item ${key === currentCategory ? 'selected' : ''}`;
+                div.innerHTML = `<i class="fa-solid ${data.icon}"></i> ${data.name}`;
+                div.onclick = () => {
+                    currentCategory = key;
+                    renderCategories();
+                };
+                grid.appendChild(div);
+            }
         }
 
+        function goToAdvanced() {
+            if (players.length < 4) return alert("تحتاج إلى 4 لاعبين على الأقل.");
+            navigate('screen-advanced');
+        }
+
+        // --- الإعدادات المتقدمة ---
+        function setTimer(seconds, element) {
+            timerDuration = seconds;
+            document.querySelectorAll('.timer-opt').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function goToConfirm() {
+            gameConfig.helperEnabled = document.getElementById('helper-toggle').checked;
+            gameConfig.hintEnabled = document.getElementById('impostor-hint-toggle').checked;
+            gameConfig.impostorCount = parseInt(document.getElementById('impostor-count').value);
+
+            if (gameConfig.impostorCount === 2) gameConfig.helperEnabled = false; // لضمان التوازن
+
+            document.getElementById('c-players').innerText = players.length;
+            document.getElementById('c-category').innerText = CATEGORIES[currentCategory].name;
+            document.getElementById('c-timer').innerText = timerDuration + " ثانية";
+            document.getElementById('c-hint').innerText = gameConfig.hintEnabled ? "نعم" : "لا";
+            document.getElementById('c-impostors').innerText = gameConfig.impostorCount;
+            document.getElementById('c-helper').innerText = gameConfig.helperEnabled ? "مفعل" : "معطل";
+
+            navigate('screen-confirm');
+        }
+
+        // --- بدء اللعبة وتوزيع الأدوار ---
         function startGame() {
-            helperEnabled = document.getElementById('helper-toggle').checked;
-            const impostorCount = parseInt(document.getElementById('impostor-count').value);
-            timerDuration = parseInt(document.getElementById('timer-duration').value);
-            if (impostorCount === 2) helperEnabled = false;
-
-            secretWord = WORDS[Math.floor(Math.random() * WORDS.length)];
-            gameRoles = {};
-            currentPlayerIndex = 0;
-
-            let shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
-            impostorsList = shuffledPlayers.slice(0, impostorCount);
-            let helperName = helperEnabled ? shuffledPlayers[impostorCount] : null;
+            const words = CATEGORIES[currentCategory].words;
+            gameState.word = words[Math.floor(Math.random() * words.length)];
+            gameState.roles = {};
+            
+            // خلط اللاعبين
+            let shuffled = [...players].sort(() => 0.5 - Math.random());
+            
+            gameState.impostors = shuffled.slice(0, gameConfig.impostorCount).map(p => p.name);
+            
+            let helperName = null;
+            if (gameConfig.helperEnabled) {
+                helperName = shuffled[gameConfig.impostorCount].name;
+            }
 
             players.forEach(p => {
-                if (impostorsList.includes(p)) gameRoles[p] = { role: "impostor" };
-                else if (p === helperName) gameRoles[p] = { role: "helper", word: secretWord };
-                else gameRoles[p] = { role: "civil", word: secretWord };
+                if (gameState.impostors.includes(p.name)) {
+                    gameState.roles[p.name] = "impostor";
+                } else if (p.name === helperName) {
+                    gameState.roles[p.name] = "helper";
+                } else {
+                    gameState.roles[p.name] = "civil";
+                }
             });
 
-            timeLeft = timerDuration;
+            gameState.currentPlayerIndex = 0;
             showPassScreen();
         }
 
+        // --- دورة اللعب: تمرير الهاتف ---
         function showPassScreen() {
-            if (currentPlayerIndex >= players.length) { startGameplay(); return; }
-            document.getElementById('pass-player-name').innerText = players[currentPlayerIndex];
+            if (gameState.currentPlayerIndex >= players.length) {
+                startDiscussion();
+                return;
+            }
+            document.getElementById('pass-name').innerText = players[gameState.currentPlayerIndex].name;
             navigate('screen-pass');
         }
 
         function showRole() {
-            const currentPlayer = players[currentPlayerIndex];
-            const roleData = gameRoles[currentPlayer];
-            const card = document.getElementById('role-card-display');
-            const icon = document.getElementById('role-icon');
-            const wordDisplay = document.getElementById('word-display');
+            const player = players[gameState.currentPlayerIndex];
+            const role = gameState.roles[player.name];
+            
+            document.getElementById('role-avatar').innerHTML = getAvatarSVG(player.color);
+            const wordContainer = document.getElementById('word-container');
             const roleTitle = document.getElementById('role-title');
-            const roleDesc = document.getElementById('role-desc');
+            const roleSubtitle = document.getElementById('role-subtitle');
 
-            if (roleData.role === 'impostor') {
-                card.className = "role-card impostor";
-                icon.className = "fa-solid fa-user-secret role-icon";
-                roleTitle.innerText = "IMPOSTOR";
-                wordDisplay.style.display = "none";
-                roleDesc.innerText = "لا تعرف الكلمة السرية. حاول التخمين دون أن ينكشف أمرك!";
-            } else if (roleData.role === 'helper') {
-                card.className = "role-card civil"; // استخدمنا الأخضر كخلفية للهيلبر أيضاً
-                icon.className = "fa-solid fa-user-ninja role-icon";
-                roleTitle.innerText = "HELPER";
-                wordDisplay.style.display = "block";
-                wordDisplay.querySelector('strong').innerText = roleData.word;
-                roleDesc.innerText = "أنت تعرف الكلمة. ساعد الإمبوستر دون أن يكشفك المدنيون!";
+            if (role === 'impostor') {
+                roleTitle.innerText = "أنت الإمبوستر!";
+                roleTitle.style.color = "var(--primary-red)";
+                roleSubtitle.innerText = "لا تعرف الكلمة السرية. حاول التخمين!";
+                wordContainer.style.display = "none";
+            } else if (role === 'helper') {
+                roleTitle.innerText = "أنت المساعد السري";
+                roleTitle.style.color = "#fbbf24";
+                roleSubtitle.innerText = "أنت تعرف الكلمة. ساعد الإمبوستر!";
+                wordContainer.style.display = "block";
+                document.getElementById('role-word').innerText = gameState.word;
             } else {
-                card.className = "role-card civil";
-                icon.className = "fa-solid fa-user role-icon";
-                roleTitle.innerText = "CIVILIAN";
-                wordDisplay.style.display = "block";
-                wordDisplay.querySelector('strong').innerText = roleData.word;
-                roleDesc.innerText = "اكتشف الإمبوستر من خلال الأسئلة!";
+                roleTitle.innerText = "أنت لاعب عادي";
+                roleTitle.style.color = "var(--primary-green)";
+                roleSubtitle.innerText = "اكتشف الإمبوستر من خلال النقاش.";
+                wordContainer.style.display = "block";
+                document.getElementById('role-word').innerText = gameState.word;
             }
 
             navigate('screen-role');
         }
 
         function hideRole() {
-            currentPlayerIndex++;
+            gameState.currentPlayerIndex++;
             showPassScreen();
         }
 
-        function startGameplay() {
-            navigate('screen-game');
-            startTimer();
-        }
-
-        function startTimer() {
-            clearInterval(timerInterval);
-            timeLeft = timerDuration;
-            updateTimerDisplay();
+        // --- مرحلة النقاش والمؤقت ---
+        function startDiscussion() {
+            navigate('screen-discussion');
+            gameState.timeLeft = timerDuration;
+            updateDiscussionTimer();
             selectPlayersForRound();
 
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    timeLeft = timerDuration;
-                    updateTimerDisplay();
-                    selectPlayersForRound(); 
+            clearInterval(gameState.timerInterval);
+            gameState.timerInterval = setInterval(() => {
+                gameState.timeLeft--;
+                updateDiscussionTimer();
+
+                if (gameState.timeLeft <= 0) {
+                    // إعادة ضبط المؤقت وتغيير السائل والمجيب
+                    gameState.timeLeft = timerDuration;
+                    selectPlayersForRound();
                 }
             }, 1000);
         }
 
-        function updateTimerDisplay() {
-            const mins = Math.floor(timeLeft / 60);
-            const secs = timeLeft % 60;
-            document.getElementById('timer-display').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        function updateDiscussionTimer() {
+            const mins = Math.floor(gameState.timeLeft / 60);
+            const secs = gameState.timeLeft % 60;
+            document.getElementById('discussion-timer').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
         function selectPlayersForRound() {
-            let questioner, answerer;
+            let qPlayer, aPlayer;
             do {
-                questioner = players[Math.floor(Math.random() * players.length)];
-                answerer = players[Math.floor(Math.random() * players.length)];
-            } while (questioner === answerer);
+                qPlayer = players[Math.floor(Math.random() * players.length)];
+                aPlayer = players[Math.floor(Math.random() * players.length)];
+            } while (qPlayer.name === aPlayer.name);
 
-            document.getElementById('questioner-name').innerText = questioner;
-            document.getElementById('answerer-name').innerText = answerer;
+            document.getElementById('q-name').innerText = qPlayer.name;
+            document.getElementById('a-name').innerText = aPlayer.name;
         }
 
-        function stopGameAndVote() {
-            clearInterval(timerInterval);
-            renderVoteList();
+        // --- التصويت ---
+        function startVoting() {
+            clearInterval(gameState.timerInterval);
+            const container = document.getElementById('vote-list');
+            container.innerHTML = "";
+            gameState.votes = {}; // تصفير الأصوات
+            
+            players.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'vote-row';
+                div.id = `vote-${p.name}`;
+                div.innerHTML = `
+                    <div class="vote-avatar">${getAvatarSVG(p.color)}</div>
+                    <div class="vote-name">${p.name}</div>
+                    <div class="radio-circle"></div>
+                `;
+                div.onclick = () => selectVote(p.name);
+                container.appendChild(div);
+            });
+            
+            document.getElementById('btn-submit-vote').disabled = true;
             navigate('screen-vote');
         }
 
-        function renderVoteList() {
-            const container = document.getElementById('vote-list-container');
-            container.innerHTML = "";
-            players.forEach(p => {
-                const div = document.createElement('div');
-                div.className = 'player-item';
-                div.innerHTML = `<span style="width: 100%; text-align: center; font-size: 1.2rem;">${p}</span>`;
-                div.style.cursor = "pointer";
-                div.onclick = () => processVote(p);
-                container.appendChild(div);
-            });
+        let selectedVote = null;
+        function selectVote(name) {
+            selectedVote = name;
+            document.querySelectorAll('.vote-row').forEach(el => el.classList.remove('selected'));
+            document.getElementById(`vote-${name}`).classList.add('selected');
+            document.getElementById('btn-submit-vote').disabled = false;
         }
 
-        function processVote(votedPlayer) {
-            let resultTitle = document.getElementById('result-title');
-            let resultSubtitle = document.getElementById('result-subtitle');
-            document.getElementById('impostor-name-reveal').innerText = impostorsList.join(" و ");
-            document.getElementById('word-reveal').innerText = secretWord;
-
-            if (impostorsList.includes(votedPlayer)) {
-                resultTitle.innerText = "فاز المدنيون! 🎉";
-                resultTitle.style.color = "var(--civil-green)";
-                resultSubtitle.innerText = `تم التصويت على ${votedPlayer} وكان إمبوستراً!`;
+        function submitVote() {
+            if (!selectedVote) return;
+            
+            // بما أننا نلعب بهاتف واحد، التصويت هنا يمثل "إجماع" المجموعة
+            const isImpostorCaught = gameState.impostors.includes(selectedVote);
+            
+            if (isImpostorCaught) {
+                // الإمبوستر تم كشفه، ننتقل لشاشة التخمين الأخير
+                document.getElementById('caught-name').innerText = selectedVote;
+                document.getElementById('guess-input').value = "";
+                navigate('screen-last-guess');
             } else {
-                resultTitle.innerText = "فاز الإمبوستر! 😈";
-                resultTitle.style.color = "var(--primary-red)";
-                resultSubtitle.innerText = `تم التصويت على ${votedPlayer} خطأً.`;
+                // تم طرد لاعب بريء، الإمبوستر يفوز فوراً
+                showGameOver(false, `تم طرد ${selectedVote} وكان بريئاً!`);
             }
-            navigate('screen-result');
+        }
+
+        // --- التخمين الأخير ---
+        function checkGuess() {
+            const guess = document.getElementById('guess-input').value.trim();
+            if (!guess) return alert("المرجو كتابة كلمة");
+            
+            if (guess === gameState.word) {
+                showGameOver(false, "لقد خدعت الجميع ونجحت في تخمين الكلمة السرية!");
+            } else {
+                showGameOver(true, "لقد فشل الإمبوستر في تخمين الكلمة.");
+            }
+        }
+
+        // --- شاشة النهاية ---
+        function showGameOver(civiliansWin, message) {
+            const icon = document.getElementById('result-icon');
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+
+            if (civiliansWin) {
+                icon.className = "fa-solid fa-trophy result-icon win";
+                title.innerText = "فاز المدنيون!";
+                title.style.color = "var(--primary-green)";
+            } else {
+                icon.className = "fa-solid fa-user-secret result-icon lose";
+                title.innerText = "فاز الإمبوستر!";
+                title.style.color = "var(--primary-red)";
+            }
+            
+            desc.innerText = message;
+            document.getElementById('final-word').innerText = gameState.word;
+            
+            navigate('screen-gameover');
         }
     </script>
 </body>
